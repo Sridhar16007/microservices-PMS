@@ -47,7 +47,7 @@ public class PatientController {
     @Operation(summary = "Update the existing patient details")
     public ResponseEntity<PatientResponseDTO> updatePatient(@PathVariable UUID id, @Validated({Default.class}) @RequestBody PatientRequestDTO patientRequestDTO) {
         //To avoid the validation of reg date during update
-        //we can only mention default class becuase reg belongs to CreatePatientValidationGroup
+        //we can only mention default class because reg belongs to CreatePatientValidationGroup
         PatientResponseDTO patientResponseDTO = patientService.updatePatient(id, patientRequestDTO);
 
         return ResponseEntity.ok().body(patientResponseDTO);
