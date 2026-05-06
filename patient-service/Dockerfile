@@ -19,7 +19,7 @@ RUN find /app/target -name "*.jar"
 # ----------------------------
 # Stage 2: Runner
 # ----------------------------
-FROM --platform=$BUILDPLATFORM openjdk:21-jdk-slim AS runner
+FROM eclipse-temurin:21-jdk-jammy AS runner
 WORKDIR /app
 
 # Copy the built JAR dynamically (avoid hardcoding version)
