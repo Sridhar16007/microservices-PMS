@@ -28,6 +28,7 @@ COPY --from=builder /app/target/*.jar ./app.jar
 # Verify the JAR exists
 RUN ls -l /app/app.jar
 
-EXPOSE 4000
+EXPOSE 4001
+EXPOSE 9001
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
