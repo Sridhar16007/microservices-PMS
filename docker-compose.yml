@@ -1,0 +1,102 @@
+services:
+  patient-service-db:
+    image: mysql:latest
+    container_name: patient-service-db
+
+    ports:
+      - "5000:3306"
+
+    environment:
+      MYSQL_DATABASE: patientdb
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: admin_user
+      MYSQL_PASSWORD: password
+
+    volumes:
+      - "E:/db_volumes/patient-service-db:/var/lib/mysql"
+
+    networks:
+      - internal
+
+  patient-service:
+    build:
+       context: ./patient-service
+       dockerfile: Dockerfile
+
+    container_name: patient-service
+
+    environment:
+      BILLING_SERVICE_ADDRESS: billing-service
+      BILLING_SERVICE_GRPC_PORT: 9001
+
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_DATASOURCE_URL: jdbc:mysql://patient-service-db:3306/patientdb
+      SPRING_DATASOURCE_USERNAME: admin_user
+
+      SPRING_JPA_DEFER_DATASOURCE_INITIALIZATION: "true"
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+
+      SPRING_SQL_INIT_MODE: always
+
+    ports:
+      - "4000:4000"
+
+    networks:
+      - internal
+
+    depends_on:
+      - patient-service-db
+    #   - kafka
+    #   - billing-service
+
+  billing-service:
+    build:
+      context: ./billing-service
+      dockerfile: Dockerfile
+
+    container_name: billing-service
+
+    ports:
+      - "4001:4001"
+      - "9001:9001"
+
+    networks:
+      - internal
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+
+    container_name: api-gateway
+
+    ports:
+      - "4004:4004"
+
+    networks:
+      - internal
+
+  analytics-service:
+    build:
+      context: ./analytics-service
+      dockerfile: Dockerfile
+
+    container_name: analytics-service
+
+    environment:
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+
+    ports:
+      - "4002:4002"
+
+    networks:
+      - internal
+
+
+networks:
+  internal:
+    driver: bridge
+
+
