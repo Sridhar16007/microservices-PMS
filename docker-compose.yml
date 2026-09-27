@@ -31,8 +31,14 @@ services:
       MYSQL_USER: admin_user
       MYSQL_PASSWORD: password
 
-    volumes:
-      - "E:/db_volumes/auth-service-db:/var/lib/mysql"
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+#    volumes:
+#      - "E:/db_volumes/auth-service-db:/var/lib/mysql"
 
     networks:
       - internal
@@ -146,10 +152,11 @@ services:
 
     environment:
       SPRING_DATASOURCE_PASSWORD: password
-      SPRING_DATASOURCE_URL: jdbc:mysql://auth-service-db:3306/db
+      SPRING_DATASOURCE_URL: jdbc:mysql://auth-service-db:3306/patientdb
       SPRING_DATASOURCE_USERNAME: admin_user
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_SQL_INIT_MODE: always
+      JWT_SECRET: pkNTiKDBphfVmg2Fctuy44ZvDYopBsylxvZajiZeOZ2
 
     ports:
       - "4005:4005"
@@ -158,7 +165,8 @@ services:
       - internal
 
     depends_on:
-      - auth-service-db
+      auth-service-db:
+        condition: service_healthy
 
 networks:
   internal:

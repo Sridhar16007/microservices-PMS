@@ -1,7 +1,9 @@
 package com.pm.authservice.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
 
+import java.sql.Types;
 import java.util.UUID;
 
 @Entity
@@ -10,6 +12,8 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JdbcTypeCode(Types.VARCHAR) // Forces Hibernate to treat UUID as VARCHAR(36)
+    @Column(length = 36)
     private UUID id;
 
     @Column(unique = true,nullable = false)
