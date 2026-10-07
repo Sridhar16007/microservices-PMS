@@ -156,7 +156,7 @@ services:
       SPRING_DATASOURCE_USERNAME: admin_user
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_SQL_INIT_MODE: always
-      JWT_SECRET: pkNTiKDBphfVmg2Fctuy44ZvDYopBsylxvZajiZeOZ2
+      JWT_SECRET: i4TyvbbPnpvTSKNN6DHEGmzrkjCzzPEVuKLn5mOQAe0
 
     ports:
       - "4005:4005"
