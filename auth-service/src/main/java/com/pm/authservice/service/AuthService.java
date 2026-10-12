@@ -3,7 +3,6 @@ package com.pm.authservice.service;
 import com.pm.authservice.dto.LoginRequestDto;
 import com.pm.authservice.util.JwtUtil;
 import io.jsonwebtoken.JwtException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
